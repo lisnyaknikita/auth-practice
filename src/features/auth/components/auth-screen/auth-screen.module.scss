@@ -1,0 +1,67 @@
+.authScreen {
+	@apply w-[360px] h-[600px] p-8 flex flex-col justify-center;
+}
+
+.authScreenSignIn {
+	@apply w-[360px] h-[460px] p-8 flex flex-col justify-center;
+}
+
+.screenHeader {
+	@apply p-0 pb-4;
+}
+
+.separator {
+	@apply mb-4 w-full;
+}
+
+.screenContent {
+	@apply p-0 mb-4;
+}
+
+.form {
+	@apply flex flex-col justify-center;
+}
+
+.inputs {
+	@apply flex flex-col gap-y-3 mb-4;
+
+	> .input {
+		@apply text-base;
+	}
+}
+
+.button {
+	@apply mb-4 text-base;
+}
+
+.or {
+	@apply flex w-full items-center justify-center mb-4;
+
+	> .line {
+		@apply w-[70px];
+	}
+
+	> span {
+		@apply px-2;
+	}
+}
+
+.alternativeButtons {
+	@apply flex flex-col gap-y-4;
+
+	> .alternativeButton {
+		@apply text-base;
+	}
+}
+
+.screenFooter {
+	@apply flex items-center justify-center;
+}
+
+.already {
+	@apply text-sm text-center;
+
+	> span {
+		@apply hover:underline font-bold cursor-pointer;
+	}
+}
