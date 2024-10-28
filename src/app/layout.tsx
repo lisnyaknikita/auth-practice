@@ -1,3 +1,5 @@
+import { Toaster } from '@/components/ui/toaster'
+import { UserProvider } from '@/context/UserContext'
 import type { Metadata } from 'next'
 import { Lexend } from 'next/font/google'
 import './globals.css'
@@ -20,7 +22,10 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body className={lexend.className}>
-				<div className='wrapper'>{children}</div>
+				<div className='wrapper'>
+					<UserProvider>{children}</UserProvider>
+					<Toaster />
+				</div>
 			</body>
 		</html>
 	)
