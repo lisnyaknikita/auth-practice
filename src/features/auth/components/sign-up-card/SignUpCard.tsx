@@ -30,6 +30,7 @@ export const SignUpCard = ({ setStatus }: ISignUpCardProps) => {
 	const {
 		register,
 		handleSubmit,
+		watch,
 		formState: { errors },
 	} = useForm<IFormData>()
 
@@ -96,14 +97,27 @@ export const SignUpCard = ({ setStatus }: ISignUpCardProps) => {
 							/>
 							{errors.email && <p className={classes.error}>{errors.email.message}</p>}
 							<Input
-								{...register('password', { required: 'Password is required' })}
+								{...register('password', {
+									required: 'Password is required',
+									minLength: {
+										value: 8,
+										message: 'Password must be at least 8 characters long',
+									},
+									pattern: {
+										value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[A-Z])[A-Za-z\d@$!%*?&]{8,}$/,
+										message: 'Password must include letters, numbers, and at least one uppercase letter',
+									},
+								})}
 								className={classes.input}
 								type='password'
 								placeholder='Password'
 							/>
 							{errors.password && <p className={classes.error}>{errors.password.message}</p>}
 							<Input
-								{...register('confirmPassword', { required: 'Please confirm your password' })}
+								{...register('confirmPassword', {
+									required: 'Please confirm your password',
+									validate: value => value === watch('password') || 'Passwords do not match',
+								})}
 								className={classes.input}
 								type='password'
 								placeholder='Confirm password'
