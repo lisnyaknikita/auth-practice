@@ -6,6 +6,10 @@
 	@apply w-[360px] h-[520px] p-8 flex flex-col justify-center;
 }
 
+.authScreenForgot {
+	@apply w-[360px] h-[420px] p-8 flex flex-col justify-center;
+}
+
 .screenHeader {
 	@apply p-0 pb-4;
 }
@@ -55,7 +59,7 @@
 }
 
 .screenFooter {
-	@apply flex items-center justify-center;
+	@apply flex flex-col gap-2 items-center justify-center;
 }
 
 .already {

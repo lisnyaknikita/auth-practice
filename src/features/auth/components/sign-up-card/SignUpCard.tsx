@@ -142,7 +142,7 @@ export const SignUpCard = ({ setStatus }: ISignUpCardProps) => {
 						</Button>
 					</div>
 				</CardContent>
-				<CardFooter>
+				<CardFooter className={classes.screenFooter}>
 					<p className={classes.already}>
 						Already have an account? <span onClick={() => setStatus('sign-in')}>Sign in</span>
 					</p>

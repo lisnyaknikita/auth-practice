@@ -3,13 +3,22 @@
 import { Button } from '@/components/ui/button'
 import { useUser } from '@/features/auth/hooks/use-user'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 export default function Home() {
+	const router = useRouter()
+
 	const { user, loading, logout } = useUser()
 
-	if (loading) return <p>Loading...</p>
+	useEffect(() => {
+		if (!loading && !user) {
+			router.replace('/auth')
+		}
+	}, [loading, user, router])
 
-	if (!user) return <p>Error while fetching user data</p>
+	if (loading) return <p>Loading...</p>
+	if (!user) return null
 
 	return (
 		<div>

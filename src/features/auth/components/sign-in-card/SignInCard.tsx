@@ -16,7 +16,7 @@ import { signInWithGoogle } from '../../services/googleAuth'
 import classes from '../auth-screen/auth-screen.module.scss'
 
 interface ISignInCardProps {
-	setStatus: (status: 'sign-in' | 'sign-up') => void
+	setStatus: (status: 'sign-in' | 'sign-up' | 'forgot-password') => void
 }
 
 interface IFormData {
@@ -112,6 +112,9 @@ export const SignInCard = ({ setStatus }: ISignInCardProps) => {
 				<CardFooter className={classes.screenFooter}>
 					<p className={classes.already}>
 						No account? <span onClick={() => setStatus('sign-up')}>Sign up</span>
+					</p>
+					<p className={classes.already}>
+						Forgot your password? <span onClick={() => setStatus('forgot-password')}>Reset it</span>
 					</p>
 				</CardFooter>
 			</Card>
