@@ -1,9 +1,13 @@
 .authScreen {
-	@apply w-[360px] h-[600px] p-8 flex flex-col justify-center;
+	@apply w-[420px] h-[700px] p-8 flex flex-col justify-center;
 }
 
 .authScreenSignIn {
-	@apply w-[360px] h-[460px] p-8 flex flex-col justify-center;
+	@apply w-[360px] h-[520px] p-8 flex flex-col justify-center;
+}
+
+.authScreenForgot {
+	@apply w-[360px] h-[420px] p-8 flex flex-col justify-center;
 }
 
 .screenHeader {
@@ -50,12 +54,12 @@
 	@apply flex flex-col gap-y-4;
 
 	> .alternativeButton {
-		@apply text-base;
+		@apply text-lg flex items-center gap-5 border-slate-950 hover:bg-slate-300 transition-colors;
 	}
 }
 
 .screenFooter {
-	@apply flex items-center justify-center;
+	@apply flex flex-col gap-2 items-center justify-center;
 }
 
 .already {
