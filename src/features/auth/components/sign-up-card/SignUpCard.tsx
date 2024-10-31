@@ -4,11 +4,12 @@ import { Input } from '@/components/ui/input'
 
 import { Separator } from '@/components/ui/separator'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { Timestamp, doc, setDoc } from 'firebase/firestore'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { FaGithub, FaGoogle } from 'react-icons/fa'
 import { toast } from 'sonner'
-import { auth } from '../../../../../firebase-config'
+import { auth, db } from '../../../../../firebase-config'
 import { signInWithGitHub } from '../../services/githubAuth'
 import { signInWithGoogle } from '../../services/googleAuth'
 import classes from '../auth-screen/auth-screen.module.scss'
@@ -64,6 +65,15 @@ export const SignUpCard = ({ setStatus }: ISignUpCardProps) => {
 		try {
 			const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
 			await updateProfile(userCredential.user, { displayName: data.userName })
+
+			await setDoc(doc(db, 'users', userCredential.user.uid), {
+				uid: userCredential.user.uid,
+				displayName: data.userName,
+				email: data.email,
+				photoURL: data.userName.charAt(0).toUpperCase(),
+				createdAt: Timestamp.now(),
+			})
+
 			toast('You have successfully registered.')
 			router.replace('/')
 		} catch (error) {
