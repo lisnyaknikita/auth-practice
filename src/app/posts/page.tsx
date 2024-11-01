@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useUser } from '@/features/auth/hooks/use-user'
 
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { IPost } from '@/types/Post.types'
 import { Loader } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -95,6 +96,7 @@ export default function PostsPage() {
 				setPosts(prevPosts => prevPosts.filter(post => post.id !== postToDelete))
 				setIsConfirmDialogOpen(false)
 				setPostToDelete(null)
+				//TODO: clear fields
 			} catch (error) {
 				console.error('Error deleting post:', error)
 				setError('Failed to delete post')
@@ -105,6 +107,15 @@ export default function PostsPage() {
 	const openDeleteConfirmDialog = (postId: string) => {
 		setPostToDelete(postId)
 		setIsConfirmDialogOpen(true)
+	}
+
+	const handleSortChange = (value: string) => {
+		if (value.includes('createdAt')) {
+			setSortField('createdAt')
+		} else {
+			setSortField('title')
+		}
+		setSortOrder(value.endsWith('Asc') ? 'asc' : 'desc')
 	}
 
 	return (
@@ -140,7 +151,27 @@ export default function PostsPage() {
 							</Dialog>
 						</div>
 						<div className={classes.search}>Search</div>
-						<div className={classes.sort}>Sort</div>
+						<div className={classes.sort}>
+							<Select onValueChange={handleSortChange}>
+								<SelectTrigger className='w-[160px]'>
+									<SelectValue placeholder='Sort' />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem className='cursor-pointer' value='createdAtAsc'>
+										Created at(asc)
+									</SelectItem>
+									<SelectItem className='cursor-pointer' value='createdAtDesc'>
+										Created at(desc)
+									</SelectItem>
+									<SelectItem className='cursor-pointer' value='titleAsc'>
+										Title(asc)
+									</SelectItem>
+									<SelectItem className='cursor-pointer' value='titleDesc'>
+										Title(desc)
+									</SelectItem>
+								</SelectContent>
+							</Select>
+						</div>
 					</div>
 					<div className={classes.posts}>
 						{loading && <Loader className='text-zinc-800 animate-spin mx-auto mt-5' />}
