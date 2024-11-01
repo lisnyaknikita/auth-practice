@@ -2,7 +2,7 @@ import { Toaster } from '@/components/ui/toaster'
 import { UserProvider } from '@/context/UserContext'
 import type { Metadata } from 'next'
 import { Lexend } from 'next/font/google'
-import './globals.css'
+import './globals.scss'
 
 const lexend = Lexend({
 	subsets: ['latin'],
