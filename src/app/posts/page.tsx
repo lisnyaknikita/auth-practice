@@ -32,6 +32,8 @@ export default function PostsPage() {
 	const [postToDelete, setPostToDelete] = useState<string | null>(null)
 	const [sortField, setSortField] = useState<'createdAt' | 'title'>('createdAt')
 	const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
+	const [allPosts, setAllPosts] = useState<IPost[]>([])
+	const [searchQuery, setSearchQuery] = useState('')
 
 	const {
 		register,
@@ -45,6 +47,7 @@ export default function PostsPage() {
 				try {
 					const userPosts: IPost[] = await fetchUserPosts(user.uid)
 					setPosts(userPosts)
+					setAllPosts(userPosts)
 				} catch (e) {
 					console.error(e)
 					setError('Failed to load posts')
@@ -118,6 +121,16 @@ export default function PostsPage() {
 		setSortOrder(value.endsWith('Asc') ? 'asc' : 'desc')
 	}
 
+	const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const query = e.target.value.toLowerCase()
+		setSearchQuery(query)
+
+		const filteredPosts = allPosts.filter(
+			post => post.title.toLowerCase().includes(query) || post.content.toLowerCase().includes(query)
+		)
+		setPosts(filteredPosts)
+	}
+
 	return (
 		<>
 			<div className={classes.wrapper}>
@@ -150,7 +163,9 @@ export default function PostsPage() {
 								</DialogContent>
 							</Dialog>
 						</div>
-						<div className={classes.search}>Search</div>
+						<div className={classes.search}>
+							<Input placeholder='Search posts...' value={searchQuery} onChange={handleSearchChange} />
+						</div>
 						<div className={classes.sort}>
 							<Select onValueChange={handleSortChange}>
 								<SelectTrigger className='w-[160px]'>
