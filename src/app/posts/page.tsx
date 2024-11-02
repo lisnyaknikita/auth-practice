@@ -8,6 +8,7 @@ import { useUser } from '@/features/auth/hooks/use-user'
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { IPost } from '@/types/Post.types'
+import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore'
 import { Loader } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -32,29 +33,39 @@ export default function PostsPage() {
 	const [postToDelete, setPostToDelete] = useState<string | null>(null)
 	const [sortField, setSortField] = useState<'createdAt' | 'title'>('createdAt')
 	const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
-	const [allPosts, setAllPosts] = useState<IPost[]>([])
+	const [allPosts] = useState<IPost[]>([])
 	const [searchQuery, setSearchQuery] = useState('')
+
+	const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<DocumentData> | null>(null)
+	const [limit] = useState(4)
+
+	const [isNextPageAvailable, setIsNextPageAvailable] = useState(true)
+	const [isPreviousPageAvailable, setIsPreviousPageAvailable] = useState(false)
 
 	const {
 		register,
 		handleSubmit,
+		reset,
 		formState: { errors },
 	} = useForm<IFormData>({ mode: 'onChange' })
 
-	useEffect(() => {
-		const loadPosts = async () => {
-			if (user) {
-				try {
-					const userPosts: IPost[] = await fetchUserPosts(user.uid)
-					setPosts(userPosts)
-					setAllPosts(userPosts)
-				} catch (e) {
-					console.error(e)
-					setError('Failed to load posts')
-				}
+	const loadPosts = async (startDoc?: QueryDocumentSnapshot<DocumentData>) => {
+		if (user) {
+			try {
+				const { posts: fetchedPosts, lastDoc: newLastDoc, totalPosts } = await fetchUserPosts(user.uid, limit, startDoc)
+				setPosts(fetchedPosts)
+				setLastDoc(newLastDoc)
+
+				setIsNextPageAvailable(totalPosts > limit && fetchedPosts.length === limit)
+				setIsPreviousPageAvailable(!!startDoc)
+			} catch (e) {
+				console.error(e)
+				setError('Failed to load posts')
 			}
 		}
+	}
 
+	useEffect(() => {
 		loadPosts()
 	}, [user])
 
@@ -85,6 +96,7 @@ export default function PostsPage() {
 				})
 				setPosts(prevPosts => [newPost, ...prevPosts])
 				setIsCreateDialogOpen(false)
+				reset()
 			} catch (error) {
 				console.error('Error creating post:', error)
 				setError('Failed to create post')
@@ -99,7 +111,6 @@ export default function PostsPage() {
 				setPosts(prevPosts => prevPosts.filter(post => post.id !== postToDelete))
 				setIsConfirmDialogOpen(false)
 				setPostToDelete(null)
-				//TODO: clear fields
 			} catch (error) {
 				console.error('Error deleting post:', error)
 				setError('Failed to delete post')
@@ -129,6 +140,16 @@ export default function PostsPage() {
 			post => post.title.toLowerCase().includes(query) || post.content.toLowerCase().includes(query)
 		)
 		setPosts(filteredPosts)
+	}
+
+	const handleNextPage = () => {
+		if (lastDoc) {
+			loadPosts(lastDoc)
+		}
+	}
+
+	const handlePreviousPage = () => {
+		loadPosts()
 	}
 
 	return (
@@ -197,7 +218,14 @@ export default function PostsPage() {
 							<PostList posts={posts} onDelete={openDeleteConfirmDialog} />
 						)}
 					</div>
-					<div className={classes.pagination}>Pagination</div>
+					<div className={classes.pagination}>
+						<Button onClick={handlePreviousPage} disabled={!isPreviousPageAvailable}>
+							Previous
+						</Button>
+						<Button onClick={handleNextPage} disabled={!isNextPageAvailable}>
+							Next
+						</Button>
+					</div>
 				</div>
 			</div>
 			<Dialog open={isConfirmDialogOpen} onOpenChange={setIsConfirmDialogOpen}>

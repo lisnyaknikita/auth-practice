@@ -1,5 +1,5 @@
 .postList {
-	@apply overflow-y-auto flex flex-col h-full scroll-smooth;
+	@apply overflow-hidden flex flex-col h-full scroll-smooth;
 }
 
 .postItem {
