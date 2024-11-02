@@ -1,0 +1,43 @@
+.wrapper {
+	@apply h-screen w-full flex items-center justify-center;
+}
+
+.inner {
+	@apply flex flex-col items-center;
+}
+
+.header {
+	@apply flex items-center justify-between mb-4 w-full;
+}
+
+.search {
+	@apply w-[260px] text-zinc-800 mr-2;
+}
+
+.sort {
+	@apply text-zinc-800;
+}
+
+.posts {
+	@apply rounded-md w-[800px] h-[339px] bg-zinc-300 overflow-hidden mb-4;
+}
+
+.pagination {
+	@apply bg-zinc-400 text-zinc-800 p-2 rounded-md;
+}
+
+.createTrigger {
+	@apply bg-zinc-400 text-zinc-800 p-2 rounded-md hover:bg-zinc-500 transition-colors;
+}
+
+.dialogTitle {
+	@apply text-zinc-800 mb-2;
+}
+
+.createInput {
+	@apply text-zinc-800 mb-3;
+}
+
+.createText {
+	@apply text-zinc-800 mb-3;
+}

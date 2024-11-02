@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { useUser } from '@/features/auth/hooks/use-user'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
@@ -27,6 +28,7 @@ export default function Home() {
 				<p>Email: {user.email}</p>
 				{user.photoURL && <Image src={user.photoURL} alt='User Avatar' width={100} height={100} />}
 			</div>
+			<Link href={'/posts'}>Posts</Link>
 			<Button onClick={logout} variant={'outline'} className='text-slate-600'>
 				Logout
 			</Button>

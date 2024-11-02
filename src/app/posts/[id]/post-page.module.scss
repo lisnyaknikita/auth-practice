@@ -1,0 +1,19 @@
+.wrapper {
+	@apply h-screen w-full flex items-center justify-center;
+}
+
+.inner {
+	@apply flex items-center gap-32;
+}
+
+.postContent {
+	@apply flex flex-col items-start gap-20;
+}
+
+.postTitle {
+	@apply font-semibold text-3xl;
+}
+
+.postText {
+	@apply text-xl;
+}

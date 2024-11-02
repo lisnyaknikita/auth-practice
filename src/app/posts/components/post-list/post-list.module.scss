@@ -1,0 +1,23 @@
+.postList {
+	@apply overflow-hidden flex flex-col h-full scroll-smooth;
+}
+
+.postItem {
+	@apply text-zinc-900 p-3 border-b border-zinc-700 rounded-b-md relative;
+}
+
+.postHeader {
+	@apply flex gap-3 pb-2;
+}
+
+.postTitle {
+	@apply font-bold text-lg;
+}
+
+.postText {
+	@apply text-base truncate;
+}
+
+.dropdown {
+	@apply absolute top-1 right-1;
+}
